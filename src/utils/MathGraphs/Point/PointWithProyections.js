@@ -84,73 +84,87 @@ export class PointWithProyections {
         ]
     }
 
-    //MARK: Draw on SVG 
-    getPathD(){
+    svg = {
 
-        const paths = {}
-
-        for (const key in this.elements) {
-
-            paths[key] = this.elements[key].getPathD();
-        }
-
-        return paths;
-    }
-
-    getAttr(){
-        const attrs = {}
-
-        for (const key in this.elements) {
-
-            const shape = this.elements[key];
-
-            if(shape instanceof Point){
-
-                attrs[key] = shape.getCircleAttr();
+        //MARK: Draw on SVG
+        /**
+         * @returns {String} The "d" path attribute
+         */ 
+        getPathD: () => {
+    
+            const paths = {}
+    
+            for (const key in this.elements) {
+    
+                paths[key] = this.elements[key].svg.getPathD();
             }
-
-            if(shape instanceof Line){
-
-                attrs[key] = shape.getLineAttr();
+    
+            return paths;
+        },
+    
+        getAttr: () => {
+            const attrs = {}
+    
+            for (const key in this.elements) {
+    
+                const shape = this.elements[key];
+    
+                if(shape instanceof Point){
+    
+                    attrs[key] = shape.svg.getCircleAttr();
+                }
+    
+                if(shape instanceof Line){
+    
+                    attrs[key] = shape.svg.getLineAttr();
+                }
             }
-        }
-
-        return attrs;
-    }
-
-    getG({pointStyle = {}, lineStyle = {}, useCircle = false, useLine = false} = {}){
-
-        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-
-        Object.entries({
-            'class': 'Point-with-proyections',
-            'data-name': this.name,
-        })
-        .forEach(([key, value]) => {
-
-            if(value) g.setAttribute(key, value);
-        });
-
-        for (let i = 0; i < this.children.length; i++) {
-
-            const shape = this.children[i];
-
-            if(shape instanceof Point){
-
-                g.appendChild(useCircle ? shape.getCircle(pointStyle) : shape.getPath(pointStyle));
-
-                continue;
+    
+            return attrs;
+        },
+    
+        /**
+         * @param {Object} params
+         * @param {import("@utils/MathGraphs/Point/Point.js").PointStyles} params.pointStyle Override points style
+         * @param {import("@utils/MathGraphs/Line/Line.js").LineStyles} params.lineStyle Override lines style
+         * @param {boolean} params.useCircle Use SVG circle element for the points
+         * @param {boolean} params.useLine Use SVG line element for the lines
+         * @returns 
+         */
+        getG: ({pointStyle = {}, lineStyle = {}, useCircle = false, useLine = false} = {}) => {
+    
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    
+            Object.entries({
+                'class': 'Point-with-proyections',
+                'data-name': this.name,
+            })
+            .forEach(([key, value]) => {
+    
+                if(value) g.setAttribute(key, value);
+            });
+    
+            for (let i = 0; i < this.children.length; i++) {
+    
+                const shape = this.children[i];
+    
+                if(shape instanceof Point){
+    
+                    g.appendChild(useCircle ? shape.svg.getCircle(pointStyle) : shape.svg.getPath(pointStyle));
+    
+                    continue;
+                }
+    
+                if(shape instanceof Line){
+    
+                    g.appendChild(useLine ? shape.svg.getLine(lineStyle) : shape.svg.getPath(lineStyle));
+    
+                    continue;
+                }
             }
-
-            if(shape instanceof Line){
-
-                g.appendChild(useLine ? shape.getLine(lineStyle) : shape.getPath(lineStyle));
-
-                continue;
-            }
-        }
-        
-        return g;
+            
+            return g;
+        },
     }
 
     //MARK: Draw on Canvas

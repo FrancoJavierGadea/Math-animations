@@ -1,5 +1,14 @@
 import { RADIANS } from "../utils";
 
+/**
+ * @typedef {Object} AngleParams
+ *  @property {String} name
+ *  @property {Number} angle Angle value in radians
+ *  @property {Number} radius Radius size in px
+ *  @property {Point} point
+ *  @property {Number} rotate Rotate angle in radians
+ *  @property {import("./Angle.js").AngleStyles} style
+ */
 
 export class RectAngle {
 
@@ -44,109 +53,151 @@ export class RectAngle {
     }
 
     //MARK: Draw on SVG Path
-    getPathD(){
+    svg = {
 
-        const [i, j] = this.quadrant;
-
-        const cos = Math.cos(this.rotate);
-        const sin = Math.sin(-this.rotate);
-
-        const pivots = [
-            {
-                x: i * this.size,
-                y: 0,
-            },
-            {
-                x: i * this.size,
-                y: j * this.size,
-            },
-            {
-                x: 0,
-                y: j * this.size
-            }
-        ]
-
-        let d = `M${this.point.x} ${this.point.y}`;
-
-        for (let i = 0; i < pivots.length; i++) {
-
-            const {x, y} = pivots[i];
-
-            const rotatedX = this.point.x + (x * cos) - (y * sin);
-            const rotatedY = this.point.y + (y * cos) + (x * sin);
-            
-            d += `L${rotatedX} ${rotatedY}`;
-        }
-        
-        d += 'Z';
-
-        return d;
-    }
-
-    getPath({color, lineWidth, fillOpacity} = {}){
-
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
-        Object.entries({
-            'class': 'Angle',
-            'stroke': color ?? this.style.color,
-            'stroke-width': lineWidth ?? this.style.lineWidth,
-            'fill': color ?? this.style.color,
-            'fill-opacity': fillOpacity ?? this.style.fillOpacity,
-            'data-name': this.name,
-            'd': this.getPathD()
-        })
-        .forEach(([key, value]) => {
-
-            if(value) path.setAttribute(key, value);
-        });
-        
-        return path;
-    }
-
-    //MARK: Draw on SVG rect
-    getRectAttr(){
-
-        const [i, j] = this.quadrant;
+        /**
+         * @param {import("./Angle.js").AngleStyles} style Override styles 
+         * @param {{jsx: Boolean}} opt 
+         * @returns Object with SVG style properties in normal or jsx
+         */
+        getStyles: (style, {jsx = false}) => {
     
-        return {
-            x: this.point.x - Math.sign(1 - i) * this.size, 
-            y: this.point.y - Math.sign(1 - j) * this.size,
-            width: this.size,
-            height: this.size,
-            transform: `rotate(${-this.rotate * RADIANS}, ${this.point.x}, ${this.point.y})`
-        }
-    }
+            if(jsx){
+    
+                return {
+                    'stroke': style?.color ?? this.style.color,
+                    'strokeWidth': style?.lineWidth ?? this.style.lineWidth,
+                    'fill': style?.color ?? this.style.color,
+                    'fillOpacity': style?.opacity ?? this.style.fillOpacity,
+                }
+            }
+            else {
+    
+                return {
+                    'stroke': style?.color ?? this.style.color,
+                    'stroke-width': style?.lineWidth ?? this.style.lineWidth,
+                    'fill': style?.color ?? this.style.color,
+                    'fill-opacity': style?.opacity ?? this.style.fillOpacity,
+                }
+            }
+        },
 
-    getRect({color, lineWidth, fillOpacity} = {}){
-
-        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-
-        Object.entries({
-            'class': 'Angle',
-            'stroke': color ?? this.style.color,
-            'stroke-width': lineWidth ?? this.style.lineWidth,
-            'fill': color ?? this.style.color,
-            'fill-opacity': fillOpacity ?? this.style.fillOpacity,
-            'data-name': this.name,
-            ...this.getRectAttr()
-        })
-        .forEach(([key, value]) => {
-
-            if(value) rect.setAttribute(key, value);
-        });
+        /**
+         * @returns {String} The "d" path attribute
+         */
+        getPathD: () => {
+    
+            const [i, j] = this.quadrant;
+    
+            const cos = Math.cos(this.rotate);
+            const sin = Math.sin(-this.rotate);
+    
+            const pivots = [
+                {
+                    x: i * this.size,
+                    y: 0,
+                },
+                {
+                    x: i * this.size,
+                    y: j * this.size,
+                },
+                {
+                    x: 0,
+                    y: j * this.size
+                }
+            ]
+    
+            let d = `M${this.point.x} ${this.point.y}`;
+    
+            for (let i = 0; i < pivots.length; i++) {
+    
+                const {x, y} = pivots[i];
+    
+                const rotatedX = this.point.x + (x * cos) - (y * sin);
+                const rotatedY = this.point.y + (y * cos) + (x * sin);
+                
+                d += `L${rotatedX} ${rotatedY}`;
+            }
+            
+            d += 'Z';
+    
+            return d;
+        },
+    
+        /**
+         * @param {import("./Angle.js").AngleStyles} style - Override styles 
+         * @returns {SVGPathElement} - SVG Path element
+         */
+        getPath: (style) => {
+    
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    
+            Object.entries({
+                'class': 'Angle',
+                ...this.svg.getStyles(style),
+                'data-name': this.name,
+                'd': this.svg.getPathD()
+            })
+            .forEach(([key, value]) => {
+    
+                if(value) path.setAttribute(key, value);
+            });
+            
+            return path;
+        },
+    
+        //MARK: Draw on SVG rect
+        /**
+         * @returns {{x:number, y:number, width:number, height:number, transform:string}} - SVG Rect element properties
+         */
+        getRectAttr: () => {
+    
+            const [i, j] = this.quadrant;
         
-        return rect;
+            return {
+                x: this.point.x - Math.sign(1 - i) * this.size, 
+                y: this.point.y - Math.sign(1 - j) * this.size,
+                width: this.size,
+                height: this.size,
+                transform: `rotate(${-this.rotate * RADIANS}, ${this.point.x}, ${this.point.y})`
+            }
+        },
+    
+        /**
+         * @param {import("./Angle.js").AngleStyles} style - Override styles 
+         * @returns {SVGRectElement} - SVG Path element
+         */
+        getRect: (style) => {
+    
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    
+            Object.entries({
+                'class': 'Angle',
+                ...this.svg.getStyles(style),
+                'data-name': this.name,
+                ...this.svg.getRectAttr()
+            })
+            .forEach(([key, value]) => {
+    
+                if(value) rect.setAttribute(key, value);
+            });
+            
+            return rect;
+        },
     }
 
     //MARK: Draw on Canvas
-    draw(ctx = new CanvasRenderingContext2D(), {color, lineWidth, fillOpacity} = {}){
+    /**
+     * @param {CanvasRenderingContext2D} ctx - Canvas context 2D
+     * @param {import("./Angle.js").AngleStyles} style - Override styles
+     */
+    draw(ctx = new CanvasRenderingContext2D(), style){
 
         ctx.save();
 
-        ctx.strokeStyle = color ?? this.style.color;
-        ctx.lineWidth = lineWidth ?? this.style.lineWidth;
-        ctx.fillStyle = color ?? this.style.color;
+        ctx.strokeStyle = style?.color ?? this.style.color;
+        ctx.lineWidth = style?.lineWidth ?? this.style.lineWidth;
+        ctx.fillStyle = style?.color ?? this.style.color;
         
         ctx.translate(this.point.x, this.point.y);
         ctx.rotate(-this.rotate);

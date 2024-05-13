@@ -1,0 +1,34 @@
+
+
+.test {
+
+    .Graph-container {
+        position: relative;
+        outline: 1px dashed gray;
+        width: fit-content;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        margin-inline: auto;
+        margin-block: 20px;
+
+        svg, canvas {
+            display: block;
+
+            grid-column-start: 1;
+            grid-row-start: 1;
+        }
+
+        .GUI {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .Stats {
+            position: absolute !important;
+            top: 0 !important;
+            right: 0 !important;
+            left: initial !important;
+        }
+    }
+}

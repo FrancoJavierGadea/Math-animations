@@ -3,8 +3,21 @@ import * as D3Scale from "d3-scale";
 import * as D3Axis from "d3-axis";
 import * as D3Select from "d3-selection";
 
+/**
+ * @typedef {Object} AxisParams
+ *  @property {Number} lengthX
+ *  @property {Number} lengthY
+ *  @property {import("@utils/MathGraphs/types.js").Range} rangeX
+ *  @property {import("@utils/MathGraphs/types.js").Range} rangeX
+ *  @property {import("@utils/MathGraphs/types.js").Point} center
+ */
+
 export class Axis {
 
+    /**
+     * @constructor
+     * @param {AxisParams} params 
+     */
     constructor(params = {}){
 
         const {
@@ -54,14 +67,29 @@ export class Axis {
         return D3Scale.scaleLinear([min, max], [from, to]);
     }
 
+    /**
+     * @param {Number} x 
+     * @returns {Number}
+     */
     x(x){
 
         return x === 0 ? this.origin.x : this.scaleX(x);
     }
+
+    /**
+     * @param {Number} y 
+     * @returns {Number}
+     */
     y(y){
 
         return y === 0 ? this.origin.y : this.scaleY(y);
     }
+
+    /**
+     * @param {Number} x
+     * @param {Number} y  
+     * @returns {Point}
+     */
     coordsToPoint(x, y){
 
         const point = [this.x(x), this.y(y)];
@@ -73,56 +101,71 @@ export class Axis {
     }
 
 
-    //----------------------------- Draw Axis on SVG -------------------
-    drawAxisX(svg, opt = {}){
+    //MARK: Draw Axis on SVG
+    svg = {
 
-        const {hideZero, color = '#000000'} = opt;
-
-        const selection = (svg instanceof D3Select.selection) ? svg : D3Select.select(svg);
-
-        const [min, max] = this.scaleX.domain();
-
-        const axis = D3Axis.axisBottom(this.scaleX)
-            .ticks(Math.abs(min) + Math.abs(max))
-            .tickFormat((d, i) => {
-
-                return d === 0 && hideZero ? '' : d;
-            });
-
-        selection.append('g')
-            .attr('class', 'Axis-x')
-            .attr('color', color)
-            .attr('transform', `translate(${0}, ${this.center.y})`)
-            .call(axis);
-    }
-
-    drawAxisY(svg, opt = {}){
-
-        const {hideZero, color = '#000000'} = opt;
-
-        const selection = (svg instanceof D3Select.selection) ? svg : D3Select.select(svg);
-
-        const [min, max] = this.scaleY.domain();
-
-        const axis = D3Axis.axisLeft(this.scaleY)
-            .ticks(Math.abs(min) + Math.abs(max))
-            .tickFormat((d, i) => {
-
-                return d === 0 && hideZero ? '' : d;
-            });
-
-        selection.append('g')
-            .attr('class', 'Axis-y')
-            .attr('color', color)
-            .attr('transform', `translate(${this.center.x}, ${0})`)
-            .call(axis);
-    }
-
-    drawAxis(svg, opt){
-
-        const selection = (svg instanceof D3Select.selection) ? svg : D3Select.select(svg);
-
-        this.drawAxisX(selection, opt);
-        this.drawAxisY(selection, opt);
+        /**
+         * @param {SVGElement | String | D3Select.Selection} svg 
+         * @param {{hideZero: boolean, color: string}} opt 
+         */
+        drawAxisX: (svg, opt = {}) => {
+    
+            const {hideZero, color = '#000000'} = opt;
+    
+            const selection = (svg instanceof D3Select.selection) ? svg : D3Select.select(svg);
+    
+            const [min, max] = this.scaleX.domain();
+    
+            const axis = D3Axis.axisBottom(this.scaleX)
+                .ticks(Math.abs(min) + Math.abs(max))
+                .tickFormat((d, i) => {
+    
+                    return d === 0 && hideZero ? '' : d;
+                });
+    
+            selection.append('g')
+                .attr('class', 'Axis-x')
+                .attr('color', color)
+                .attr('transform', `translate(${0}, ${this.center.y})`)
+                .call(axis);
+        },
+    
+        /**
+         * @param {SVGElement | String | D3Select.Selection} svg 
+         * @param {{hideZero: boolean, color: string}} opt 
+         */
+        drawAxisY: (svg, opt = {}) => {
+    
+            const {hideZero, color = '#000000'} = opt;
+    
+            const selection = (svg instanceof D3Select.selection) ? svg : D3Select.select(svg);
+    
+            const [min, max] = this.scaleY.domain();
+    
+            const axis = D3Axis.axisLeft(this.scaleY)
+                .ticks(Math.abs(min) + Math.abs(max))
+                .tickFormat((d, i) => {
+    
+                    return d === 0 && hideZero ? '' : d;
+                });
+    
+            selection.append('g')
+                .attr('class', 'Axis-y')
+                .attr('color', color)
+                .attr('transform', `translate(${this.center.x}, ${0})`)
+                .call(axis);
+        },
+    
+        /**
+         * @param {SVGElement | String | D3Select.Selection} svg 
+         * @param {{hideZero: boolean, color: string}} opt 
+         */
+        drawAxis: (svg, opt) => {
+    
+            const selection = (svg instanceof D3Select.selection) ? svg : D3Select.select(svg);
+    
+            this.drawAxisX(selection, opt);
+            this.drawAxisY(selection, opt);
+        },
     }
 }

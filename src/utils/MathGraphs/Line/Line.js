@@ -1,4 +1,17 @@
 
+/**
+ * @typedef {Object} LineStyles
+ *  @property {String} color
+ *  @property {Number} lineWidth
+ *  @property {Array<Number>} lineDash
+ * 
+ * @typedef {Object} LineParams
+ *  @property {String} name
+ *  @property {Number} start Start point
+ *  @property {Number} end End point
+ *  @property {LineStyles} style
+ */
+
 export class Line {
 
     static defaultStyle = {
@@ -7,6 +20,10 @@ export class Line {
         lineDash: []
     }
 
+    /**
+     * @constructor
+     * @param {LineParams} params 
+     */
     constructor(params = {}){
 
         const {
@@ -32,62 +49,98 @@ export class Line {
         }
     }
 
-    //MARK: Draw on SVG Path
-    getPathD(){
+    //MARK: SVG
+    svg = {
 
-        return `M${this.start.x} ${this.start.y}L${this.end.x} ${this.end.y}`;
-    }
+        /**
+         * @param {LineStyles} style Override styles 
+         * @param {{jsx: Boolean}} opt 
+         * @returns Object with SVG style properties in normal or jsx
+         */
+        getStyles: (style, {jsx = false}) => {
 
-    getPath(style = {}){
+            if(jsx) {
+                return {
+                    'stroke': style?.color ?? this.style.color,
+                    'strokeWidth': style?.lineWidth ?? this.style.lineWidth,
+                    'strokeDasharray': style?.lineDash?.join(' ') ?? this.style.lineDash.join(' '),
+                    'fill': 'none',
+                }
+            }
+            else {
+                return {
+                    'stroke': style?.color ?? this.style.color,
+                    'stroke-width': style?.lineWidth ?? this.style.lineWidth,
+                    'stroke-dasharray': style?.lineDash?.join(' ') ?? this.style.lineDash.join(' '),
+                    'fill': 'none',
+                }
+            }
+        }, 
 
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
-        Object.entries({
-            'class': 'Line',
-            'stroke': style?.color ?? this.style.color,
-            'stroke-width': style?.lineWidth ?? this.style.lineWidth,
-            'stroke-dasharray': style?.lineDash?.join(' ') ?? this.style.lineDash.join(' '),
-            'fill': 'none',
-            'data-name': this.name,
-            'd': this.getPathD()
-        })
-        .forEach(([key, value]) => {
-
-            if(value) path.setAttribute(key, value);
-        });
-        
-        return path;
-    }
-
-    //MARK: Draw on SVG line
-    getLineAttr(){
-        return {
-            'x1': this.start.x,
-            'y1': this.start.y,
-            'x2': this.end.x,
-            'y2': this.end.y
-        }
-    }
-
-    getLine(style){
-
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-
-        Object.entries({
-            'class': 'Line',
-            'stroke': style?.color ?? this.style.color,
-            'stroke-width': style?.lineWidth ?? this.style.lineWidth,
-            'stroke-dasharray': style?.lineDash?.join(' ') ?? this.style.lineDash.join(' '),
-            'fill': 'none',
-            'data-name': this.name,
-            ...this.getLineAttr()
-        })
-        .forEach(([key, value]) => {
-
-            if(value) line.setAttribute(key, value);
-        });
-        
-        return line;
+        /**
+         * @returns {String} The "d" path attribute
+         */
+        getPathD: () => {
+    
+            return `M${this.start.x} ${this.start.y}L${this.end.x} ${this.end.y}`;
+        },
+    
+        /**
+         * @param {LineStyles} style - Override styles 
+         * @returns {SVGPathElement} - SVG Path element
+         */
+        getPath: (style) => {
+    
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    
+            Object.entries({
+                'class': 'Line',
+                ...this.svg.getStyles(style),
+                'data-name': this.name,
+                'd': this.svg.getPathD()
+            })
+            .forEach(([key, value]) => {
+    
+                if(value) path.setAttribute(key, value);
+            });
+            
+            return path;
+        },
+    
+        //MARK: Draw on SVG line
+        /**
+         * @returns {{x1:number, y1:number, x2:number, y2:number}} - SVG Line element properties
+         */
+        getLineAttr: () => {
+            return {
+                'x1': this.start.x,
+                'y1': this.start.y,
+                'x2': this.end.x,
+                'y2': this.end.y
+            }
+        },
+    
+        /**
+         * @param {LineStyles} style - Override styles 
+         * @returns {SVGLineElement} - SVG Line element
+         */
+        getLine: (style) => {
+    
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    
+            Object.entries({
+                'class': 'Line',
+                ...this.svg.getStyles(style),
+                'data-name': this.name,
+                ...this.svg.getLineAttr()
+            })
+            .forEach(([key, value]) => {
+    
+                if(value) line.setAttribute(key, value);
+            });
+            
+            return line;
+        },
     }
 
     //MARK: Draw on Canvas
