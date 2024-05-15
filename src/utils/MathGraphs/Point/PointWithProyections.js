@@ -2,11 +2,29 @@
 import {Line} from "../Line/Line.js";
 import { Point } from "./Point.js";
 
+/**
+ * @typedef {Object} PointWithProyectionsParams
+ *  @property {String} name
+ *  @property {import("@utils/MathGraphs/types.js").Point} point Point
+ *  @property {Number} radius Points radius, default: 4
+ *  @property {import("@utils/MathGraphs/types.js").Point} origin Origin point, default: [0, 0]
+ *  @property {import("./Point.js").PointStyles} pointStyle Points styles
+ *  @property {import("@utils/MathGraphs/Line/Line.js").LineStyles} lineStyle Lines styles
+ */
 
 export class PointWithProyections {
 
     static defaultLineStyle = {
+        color: '#000000',
+        lineWidth: 1.0,
         lineDash: [5]
+    }
+
+    static defaultPointStyle = {
+        color: '#000000',
+        borderColor: '#ffffff',
+        lineWidth: 1.0,
+        fillOpacity: 1
     }
 
     constructor(params) {
@@ -20,7 +38,10 @@ export class PointWithProyections {
             lineStyle = {}
         } = params;
 
-        this.pointStyle = pointStyle;
+        this.pointStyle = {
+            ...PointWithProyections.defaultPointStyle,
+            ...pointStyle
+        };
         this.lineStyle = {
             ...PointWithProyections.defaultLineStyle,
             ...lineStyle

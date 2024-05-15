@@ -1,25 +1,15 @@
 import { Plot } from "./Plot";
 
 /**
- * @typedef {[min:number, max:number] | {min:number, max:number}} Range
- * 
- * @typedef {[x:number, y:number] | {x:number, y:number}} Point
- *
- * @typedef {Object} Styles
- *  @property {String} color
- *  @property {Number} lineWidth
- *  @property {Number} opacity
- *  @property {Array<Number>} lineDash
- * 
  * @typedef {Object} AcotPlotParams
  *  @property {String} name
- *  @property {(x:number) => number} func
- *  @property {Range} range
- *  @property {Number} step
- *  @property {import("../Axis.js").Axis} axis
- *  @property {Number} buff
- *  @property {Styles} plotStyle 
- *  @property {Styles} dashPlotStyle
+ *  @property {(x:number) => number} func Math function y = f(x)
+ *  @property {import("@utils/MathGraphs/types.js")} range Domain range of f(x), default: [-5, 5]
+ *  @property {Number} step Step of x value to calculate the points, default: 0.1
+ *  @property {import("@utils/MathGraphs/Axis.js").Axis} axis Axis and Cartesian system to draw f(x)
+ *  @property {Number} buff default: 3
+ *  @property {import("./Plot.js").PlotStyles} plotStyle Plot styles
+ *  @property {import("./Plot.js").PlotStyles} dashPlotStyle Dash plot styles
  */
 
 
@@ -98,6 +88,9 @@ export class AcotPlot {
     //MARK: Draw on SVG
     svg = {
 
+        /**
+         * @returns {{plot: String, dashPlot: String}} The "d" path attribute for plot and dashPlot
+         */
         getPathD: () => {
     
             return {
@@ -106,6 +99,9 @@ export class AcotPlot {
             }
         },
         
+        /**
+         * @returns {}
+         */
         getPolylineAttr: () => {
     
             return {
@@ -116,7 +112,7 @@ export class AcotPlot {
 
         /**
          * @param {{plotStyle: {}, dashPlotStyle: {}, usePolyline: Boolean}} opt
-         * @returns {SVGGElement}
+         * @returns {SVGGElement} SVG G element with the Path or Polyline of plots
          */
         getG: ({plotStyle = {}, dashPlotStyle = {}, usePolyline = true} = {}) => {
     

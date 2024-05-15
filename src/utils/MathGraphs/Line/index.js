@@ -4,12 +4,20 @@ import { LinePointWithAngle } from "./LinePointWithAngle";
 
 export default {
 
-    from2Points(params){
+    /**
+     * @param {import("./Line.js").LineParams} params 
+     * @returns {import("./Line.js").Line}
+     */
+    from2Points(params) {
 
         return new Line(params);
     },
     
-    fromPointWithAngle(params){
+    /**
+     * @param {import("./LinePointWithAngle.js").LinePointWithAngleParams} params 
+     * @returns {import("./Line.js").Line}
+     */
+    fromPointWithAngle(params) {
 
         return new LinePointWithAngle(params);
     }

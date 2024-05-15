@@ -1,4 +1,4 @@
-import { DEGREES } from "@utils/MathGraphs/utils";
+import { DEGREES, RADIANS } from "@utils/MathGraphs/utils";
 import { Axis } from "@utils/MathGraphs/Axis";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "@/css/test.css";
@@ -23,7 +23,7 @@ function AngleSVGTest() {
 
     useEffect(() => {
         
-        axis.drawAxis(svgRef.current.querySelector('.axis'), {hideZero: true, color: '#bebebe'});
+        axis.svg.drawAxis(svgRef.current.querySelector('.axis'), {hideZero: true, color: '#bebebe'});
 
     }, [axis]);
 
@@ -45,9 +45,9 @@ function AngleSVGTest() {
     //MARK: State
 
     //Path D attribute
-    const [d, setD] = useState(angle.getPathD());
+    const [d, setD] = useState(angle.svg.getPathD());
 
-    const [style, setStyle] = useState(angle.getStyle(null, {jsx: true}));
+    const [style, setStyle] = useState(angle.svg.getStyles(null, {jsx: true}));
 
     
     //MARK: hangleChange
@@ -72,14 +72,14 @@ function AngleSVGTest() {
                         break;
                 }
 
-                setD(angle.getPathD());
+                setD(angle.svg.getPathD());
             }
     
             if(e.folderName === 'style'){
     
                 angle.style[e.name] = e.value;
     
-                setStyle(angle.getStyle(null, {jsx: true}));
+                setStyle(angle.svg.getStyles(null, {jsx: true}));
             }
     
         }, 200);
@@ -91,7 +91,7 @@ function AngleSVGTest() {
     const controls = useMemo(() => ({
 
         'angle': [
-            {type: 'range', name: 'angle', value: angle.angle, min: 0, max: 360, step: 1},
+            {type: 'range', name: 'angle', value: angle.angle * RADIANS, min: 0, max: 360, step: 1},
             {type: 'range', name: 'radius', value: angle.radius, min: 10, max: 200, step: 1}
         ],
         'style': [

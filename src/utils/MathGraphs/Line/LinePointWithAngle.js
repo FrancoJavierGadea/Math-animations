@@ -4,9 +4,9 @@ import { Line } from "./Line";
  * @typedef {Object} LinePointWithAngleParams
  *  @property {String} name
  *  @property {import("@utils/MathGraphs/types.js").Point} point
- *  @property {Number} angle angle in radians,
- *  @property {Number} length Line length
- *  @property {Boolean} center Center the line over the point
+ *  @property {Number} angle angle in radians, default: 0
+ *  @property {Number} length Line length, default: 200
+ *  @property {Boolean} center Center the line over the point, default: false
  *  @property {LineStyles} style
  */
 

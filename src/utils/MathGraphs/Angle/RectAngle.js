@@ -52,7 +52,7 @@ export class RectAngle {
         this.quadrant = [Math.sign(quadrant[0]), Math.sign(-quadrant[1])];
     }
 
-    //MARK: Draw on SVG Path
+    //MARK: SVG 
     svg = {
 
         /**
@@ -60,7 +60,7 @@ export class RectAngle {
          * @param {{jsx: Boolean}} opt 
          * @returns Object with SVG style properties in normal or jsx
          */
-        getStyles: (style, {jsx = false}) => {
+        getStyles: (style, {jsx = false} = {}) => {
     
             if(jsx){
     
@@ -165,7 +165,7 @@ export class RectAngle {
     
         /**
          * @param {import("./Angle.js").AngleStyles} style - Override styles 
-         * @returns {SVGRectElement} - SVG Path element
+         * @returns {SVGRectElement} SVG rect element
          */
         getRect: (style) => {
     
@@ -214,7 +214,7 @@ export class RectAngle {
         ctx.closePath();
 
         ctx.stroke();
-        ctx.globalAlpha = fillOpacity ?? this.style.fillOpacity;
+        ctx.globalAlpha = style?.fillOpacity ?? this.style.fillOpacity;
         ctx.fill();
 
         ctx.restore();

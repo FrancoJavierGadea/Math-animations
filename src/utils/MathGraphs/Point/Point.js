@@ -1,15 +1,16 @@
 
 /**
  * @typedef {Object} PointStyles
- *  @property {String} color
- *  @property {Number} lineWidth
- *  @property {String} borderColor
- *  @property {Number} fillOpacity
+ *  @property {String} color default: #000
+ *  @property {Number} lineWidth default: 1.0
+ *  @property {String} borderColor default: #fff
+ *  @property {Number} fillOpacity default: 1.0
  * 
  * @typedef {Object} PointParams
  *  @property {String} name
- *  @property {Number} radius Start point
- *  @property {LineStyles} style
+ *  @property {import("@utils/MathGraphs/types.js").Point} point Point
+ *  @property {Number} radius Point radius
+ *  @property {PointStyles} style Point styles
  */
 
 export class Point {
@@ -52,9 +53,9 @@ export class Point {
         /**
          * @param {PointStyles} style Override styles 
          * @param {{jsx: Boolean}} opt 
-         * @returns Object with SVG style properties in normal or jsx
+         * @returns Object with SVG style properties in normal or JSX
          */
-        getStyles: (style, {jsx = false}) => {
+        getStyles: (style, {jsx = false} = {}) => {
 
             if(jsx) {
                 return {
@@ -111,7 +112,9 @@ export class Point {
         },
 
         //MARK: Draw on SVG circle
-        /** @returns {{cx:number, cy:number, r:number}} */
+        /** 
+         * @returns {{cx:number, cy:number, r:number}} SVG Circle properties
+         */
         getCircleAttr(){
             return {
                 'cx': this.point.x,
@@ -121,8 +124,8 @@ export class Point {
         },
 
         /**
-         * @param {PointStyles} styles 
-         * @returns {SVGCircleElement}
+         * @param {PointStyles} styles Override styles 
+         * @returns {SVGCircleElement} SVG Circle element
          */
         getCircle: (style) => {
     
@@ -144,13 +147,17 @@ export class Point {
     }
 
     //MARK: Draw on Canvas
-    draw(ctx = new CanvasRenderingContext2D(), {color, lineWidth, fillOpacity, borderColor} = {}){
+    /**
+     * @param {CanvasRenderingContext2D} ctx Canvas context 2D
+     * @param {PointStyles} style Override styles 
+     */
+    draw(ctx, style){
 
         ctx.save();
 
-        ctx.strokeStyle = borderColor ?? this.style.borderColor;
-        ctx.lineWidth = lineWidth ?? this.style.lineWidth;
-        ctx.fillStyle = color ?? this.style.color;
+        ctx.strokeStyle = style?.borderColor ?? this.style.borderColor;
+        ctx.lineWidth = style?.lineWidth ?? this.style.lineWidth;
+        ctx.fillStyle = style?.color ?? this.style.color;
         
         ctx.beginPath();
 
@@ -159,7 +166,7 @@ export class Point {
         ctx.closePath();
 
         ctx.stroke();
-        ctx.globalAlpha = fillOpacity ?? this.style.fillOpacity;
+        ctx.globalAlpha = style?.fillOpacity ?? this.style.fillOpacity;
         ctx.fill();
 
         ctx.restore();

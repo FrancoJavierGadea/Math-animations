@@ -25,7 +25,7 @@ function PlotSVGTest() {
 
     useEffect(() => {
         
-        axis.drawAxis(svgRef.current.querySelector('.axis'), {hideZero: true, color: '#bebebe'});
+        axis.svg.drawAxis(svgRef.current.querySelector('.axis'), {hideZero: true, color: '#bebebe'});
 
     }, [axis]);
 
@@ -47,12 +47,12 @@ function PlotSVGTest() {
     const [usePolyline, setUsePolyline] = useState(false);
 
     //Path D attribute
-    const [d, setD] = useState(plot.getPathD());
+    const [d, setD] = useState(plot.svg.getPathD());
 
     //Polyline attributes
-    const [polylineAttr, setPolylineAttr] = useState(plot.getPolylineAttr());
+    const [polylineAttr, setPolylineAttr] = useState(plot.svg.getPolylineAttr());
 
-    const [style, setStyle] = useState(plot.getStyle(null, {jsx: true}));
+    const [style, setStyle] = useState(plot.svg.getStyles(null, {jsx: true}));
 
     
     //MARK: hangleChange
@@ -81,15 +81,15 @@ function PlotSVGTest() {
                         break; 
                 }
 
-                setD(plot.getPathD());
-                setPolylineAttr(plot.getPolylineAttr());
+                setD(plot.svg.getPathD());
+                setPolylineAttr(plot.svg.getPolylineAttr());
             }
     
             if(e.folderName === 'style'){
     
                 plot.style[e.name] = e.value;
     
-                setStyle(plot.getStyle(null, {jsx: true}));
+                setStyle(plot.svg.getStyles(null, {jsx: true}));
             }
     
         }, 200);

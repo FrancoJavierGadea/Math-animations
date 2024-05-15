@@ -1,15 +1,15 @@
 
 /**
  * @typedef {Object} LineStyles
- *  @property {String} color
- *  @property {Number} lineWidth
- *  @property {Array<Number>} lineDash
+ *  @property {String} color default: #000
+ *  @property {Number} lineWidth default: 1.0
+ *  @property {Array<Number>} lineDash default: []
  * 
  * @typedef {Object} LineParams
  *  @property {String} name
  *  @property {Number} start Start point
  *  @property {Number} end End point
- *  @property {LineStyles} style
+ *  @property {LineStyles} style Line styles
  */
 
 export class Line {
@@ -55,9 +55,9 @@ export class Line {
         /**
          * @param {LineStyles} style Override styles 
          * @param {{jsx: Boolean}} opt 
-         * @returns Object with SVG style properties in normal or jsx
+         * @returns Object with SVG style properties in normal or JSX
          */
-        getStyles: (style, {jsx = false}) => {
+        getStyles: (style, {jsx = false} = {}) => {
 
             if(jsx) {
                 return {
@@ -144,7 +144,11 @@ export class Line {
     }
 
     //MARK: Draw on Canvas
-    draw(ctx = new CanvasRenderingContext2D(), style = {}){
+    /**
+     * @param {CanvasRenderingContext2D} ctx Canvas context 2D
+     * @param {LineStyles} style Override styles 
+     */
+    draw(ctx, style){
 
         ctx.save();
 
@@ -162,6 +166,3 @@ export class Line {
         ctx.restore();
     }
 }
-
-
-//MARK: LinePointWithAngle

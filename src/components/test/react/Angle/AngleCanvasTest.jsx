@@ -24,7 +24,7 @@ function PlotCanvasTest() {
 
     useEffect(() => {
         
-        axis.drawAxis(svgRef.current, {hideZero: true, color: '#bebebe'});
+        axis.svg.drawAxis(svgRef.current, {hideZero: true, color: '#bebebe'});
 
     }, [axis]);
 

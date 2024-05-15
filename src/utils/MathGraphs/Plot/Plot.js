@@ -1,18 +1,18 @@
 
 /**
  * @typedef {Object} PlotStyles
- *  @property {String} color
- *  @property {Number} lineWidth
- *  @property {Number} opacity
- *  @property {Array<Number>} lineDash
+ *  @property {String} color default: #000
+ *  @property {Number} lineWidth default: 1.0
+ *  @property {Number} opacity default: 1.0
+ *  @property {Array<Number>} lineDash default: []
  * 
  * @typedef {Object} PlotParams
  *  @property {String} name
- *  @property {(x:number) => number} func
- *  @property {import("@utils/MathGraphs/types.js").Range} range
- *  @property {Number} step
- *  @property {import("@utils/MathGraphs/Axis.js").Axis} axis
- *  @property {PlotStyles} style
+ *  @property {(x:number) => number} func Math function y = f(x)
+ *  @property {import("@utils/MathGraphs/types.js").Range} range Domain range of f(x), default: [-5, 5]
+ *  @property {Number} step Step of x value to calculate the points, default: 0.1
+ *  @property {import("@utils/MathGraphs/Axis.js").Axis} axis Axis and Cartesian system to draw f(x)
+ *  @property {PlotStyles} style Plot styles
  */
 
 export class Plot {
@@ -107,7 +107,7 @@ export class Plot {
         /**
          * @param {PlotStyles} style - Override styles 
          * @param {{jsx:boolean}} options 
-         * @returns 
+         * @returns Object with SVG style properties in normal or JSX
          */
         getStyles: (style, {jsx = false} = {}) => {
     
@@ -175,7 +175,7 @@ export class Plot {
     
         //MARK: Draw on SVG Polyline
         /**
-         * @returns {{points:string}}
+         * @returns {{points: String}} SVG Polyline properties
          */
         getPolylineAttr: () => {
     

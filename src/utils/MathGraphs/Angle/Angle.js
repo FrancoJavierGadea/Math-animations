@@ -150,7 +150,7 @@ export class Angle {
         ctx.closePath();
 
         ctx.stroke();
-        ctx.globalAlpha = fillOpacity ?? this.style.fillOpacity;
+        ctx.globalAlpha = style?.fillOpacity ?? this.style.fillOpacity;
         ctx.fill();
 
         ctx.restore();

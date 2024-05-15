@@ -7,6 +7,7 @@ import { RectAngle } from "@utils/MathGraphs/Angle/RectAngle";
 import { Point } from "@utils/MathGraphs/Point/Point";
 import { PointWithProyections } from "@utils/MathGraphs/Point/PointWithProyections";
 import { AcotPlot } from "@utils/MathGraphs/Plot/AcotPlot";
+import { Arrow } from "@utils/MathGraphs/Arrow/Arrow";
 
 const axis = new Axis();
 
@@ -40,7 +41,6 @@ const plot3 = new AcotPlot({
     }
 });
 
-console.log(plot3)
 
 const line1 = Line.from2Points({
     start: [axis.x(-4), axis.y(3)],
@@ -95,31 +95,41 @@ const point = new PointWithProyections({
 });
 
 
+const arrow = new Arrow({
+    start: [axis.x(-4), axis.y(3)],
+    end: [axis.x(4), axis.y(-3)],
+    style: {
+        color: '#11992e',
+        lineWidth: 2
+    }
+});
 
 (() => {
     const svg = document.querySelector('svg.back');
     const canvas = document.querySelector('canvas.front');
     const ctx = canvas.getContext('2d');
 
-    axis.drawAxis(svg, {hideZero: true, color: '#bebebe'});
+    axis.svg.drawAxis(svg, {hideZero: true, color: '#bebebe'});
     
-    [rectAngle, plot1, plot2, plot3, line1, line2, angle, point].forEach(plot => plot.draw(ctx));
+    //[rectAngle, plot1, plot2, plot3, line1, line2, angle, point].forEach(plot => plot.draw(ctx));
+
+    [arrow].forEach(plot => plot.draw(ctx));
 })();
 
 (() => {
 
     const svg = document.querySelector('svg.only-svg');
 
-    axis.drawAxis(svg, {hideZero: true, color: '#d6d6d6'});
+    axis.svg.drawAxis(svg, {hideZero: true, color: '#d6d6d6'});
 
-    [plot1, plot2,].forEach(plot => svg.appendChild(plot.getPolyline()));
+    // [plot1, plot2,].forEach(plot => svg.appendChild(plot.svg.getPolyline()));
 
-    [line1, line2].forEach(line1 => svg.appendChild(line1.getLine()));
+    // [line1, line2].forEach(line => svg.appendChild(line.svg.getLine()));
 
-    svg.appendChild(plot3.getG());
+    // [plot3, point].forEach(element => svg.appendChild(element.svg.getG()));
 
-    console.log(point.getPathD())
+    // [rectAngle].forEach(element => svg.appendChild(element.svg.getRect()));
 
-    svg.appendChild(rectAngle.getRect());
+    [arrow].forEach(element => svg.appendChild(element.svg.getG()));
 
 })();

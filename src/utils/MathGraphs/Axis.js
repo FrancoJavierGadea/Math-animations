@@ -164,8 +164,8 @@ export class Axis {
     
             const selection = (svg instanceof D3Select.selection) ? svg : D3Select.select(svg);
     
-            this.drawAxisX(selection, opt);
-            this.drawAxisY(selection, opt);
+            this.svg.drawAxisX(selection, opt);
+            this.svg.drawAxisY(selection, opt);
         },
     }
 }
