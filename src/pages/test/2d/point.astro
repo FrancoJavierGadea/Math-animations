@@ -1,0 +1,35 @@
+---
+import PointSVGTest from "@components/react/test/Point/PointSVGTest";
+import Layout from "@layouts/Layout.astro";
+import PointCanvasTest from "@components/react/test/Point/PointCanvasTest";
+---
+
+
+<Layout title="Point test">
+
+    <main>
+
+        <h1>Canvas</h1>
+    
+        <PointCanvasTest client:only />
+    
+        <h1>SVG</h1>
+    
+        <PointSVGTest client:only />
+
+    </main>
+
+</Layout>
+
+<style>
+    main {
+        padding-block: 50px;
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-family: monospace, sans-serif;
+            font-size: 50px;
+        }
+    }
+</style>

@@ -1,51 +1,58 @@
 ---
-import Layout from "@layouts/Layout.astro"
+import Layout from "@layouts/Layout.astro";
+
+const links = [
+    '/test/2d/angle',
+    '/test/2d/arrow',
+    '/test/2d/line',
+    '/test/2d/plot',
+    '/test/2d/point-with-proyections',
+    '/test/2d/point'
+];
 ---
 
 <Layout>
 
     <main>
     
-        <div class="container">
-            <svg class="back" width="960" height="540"></svg>
-            <canvas class="front" width="960" height="540"></canvas>
-        </div>
-        
-        <svg class="only-svg" width="960" height="540"></svg>
+        <ul>
+            {
+                links.map((link) => {
+
+                    return <li>
+                        <a href={link}>{link}</a>
+                    </li>
+                })
+            }
+        </ul>
     
     </main>
 
 </Layout>
 
-
-
-<script src="./script.js"></script>
-
 <style>
     main {
         background-color: black;
         display: flow-root;
-    }
-    .container {
-        margin-block: 50px;
-        margin-inline: auto;
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        outline: 1px solid gray;
-        width: fit-content;
+        padding: 20px;
 
-        * {
-            display: block;
-            grid-row-start: 1;
-            grid-column-start: 1;
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            list-style: none;
+
+            a {
+                font-size: 20px;
+                text-decoration: none;
+                letter-spacing: 2px;
+                color: white;
+
+                &:hover {
+                    color: aqua;
+                }
+            }
         }
     }
 
-    .only-svg {
-        display: block;
-        margin-inline: auto;
-        margin-block: 50px;
-        outline: 1px solid gray;
-    }
 </style>

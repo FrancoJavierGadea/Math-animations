@@ -9,6 +9,7 @@
       "@assets/*": ["src/assets/*"],
       "@utils/*": ["src/utils/*"],
       "@layouts/*": ["src/layouts/*"],
+      "@react/*": ["src/components/react/*"],
       "@/*": ["src/*"],
     }
   }

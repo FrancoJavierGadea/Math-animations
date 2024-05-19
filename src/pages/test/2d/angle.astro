@@ -1,0 +1,36 @@
+---
+import Layout from "@layouts/Layout.astro";
+import AngleCanvasTest from "@react/test/Angle/AngleCanvasTest";
+import AngleSVGTest from "@react/test/Angle/AngleSVGTest";
+
+---
+
+
+<Layout title="Angle test">
+
+    <main>
+
+        <h1>Canvas</h1>
+    
+        <AngleCanvasTest client:only />
+    
+        <h1>SVG</h1>
+    
+        <AngleSVGTest client:only />
+
+    </main>
+
+</Layout>
+
+<style>
+    main {
+        padding-block: 50px;
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-family: monospace, sans-serif;
+            font-size: 50px;
+        }
+    }
+</style>

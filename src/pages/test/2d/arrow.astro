@@ -1,0 +1,36 @@
+---
+import Layout from "@layouts/Layout.astro";
+import ArrowCanvasTest from "@react/test/Arrow/ArrowCanvasTest";
+import ArrowSVGTest from "@react/test/Arrow/ArrowSVGTest";
+
+---
+
+
+<Layout title="Arrow test">
+
+    <main>
+
+        <h1>Canvas</h1>
+    
+        <ArrowCanvasTest client:only />
+    
+        <h1>SVG</h1>
+    
+        <ArrowSVGTest client:only />
+
+    </main>
+
+</Layout>
+
+<style>
+    main {
+        padding-block: 50px;
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-family: monospace, sans-serif;
+            font-size: 50px;
+        }
+    }
+</style>

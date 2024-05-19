@@ -1,0 +1,36 @@
+---
+import Layout from "@layouts/Layout.astro";
+import PlotCanvasTest from "@react/test/Plot/PlotCanvasTest";
+import PlotSVGTest from "@react/test/Plot/PlotSVGTest";
+
+---
+
+
+<Layout title="Plot test">
+
+    <main>
+
+        <h1>Canvas</h1>
+    
+        <PlotCanvasTest client:only />
+    
+        <h1>SVG</h1>
+    
+        <PlotSVGTest client:only />
+
+    </main>
+
+</Layout>
+
+<style>
+    main {
+        padding-block: 50px;
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-family: monospace, sans-serif;
+            font-size: 50px;
+        }
+    }
+</style>

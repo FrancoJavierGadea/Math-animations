@@ -1,0 +1,36 @@
+---
+import PointWithProyectionsCanvasTest from "@components/react/test/PointWithProyections/PointWithProyectionsCanvasTest";
+import PointWithProyectionsSVGTest from "@components/react/test/PointWithProyections/PointWithProyectionsSVGTest";
+import Layout from "@layouts/Layout.astro";
+
+---
+
+
+<Layout title="PointWithProyections test">
+
+    <main>
+
+        <h1>Canvas</h1>
+    
+        <PointWithProyectionsCanvasTest client:only />
+    
+        <h1>SVG</h1>
+    
+        <PointWithProyectionsSVGTest client:only />
+
+    </main>
+
+</Layout>
+
+<style>
+    main {
+        padding-block: 50px;
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-family: monospace, sans-serif;
+            font-size: 50px;
+        }
+    }
+</style>
