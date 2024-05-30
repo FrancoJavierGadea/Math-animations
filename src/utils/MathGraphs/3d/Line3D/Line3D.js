@@ -1,12 +1,29 @@
 import { DEGREES } from "@utils/MathGraphs/utils";
 import * as THREE from "three";
 
+/**
+ * @typedef Line3DStyle
+ *  @property {String} color
+ * 
+ * @typedef Line3DParams
+ *  @property {import("@utils/MathGraphs/types.js").Point3D} start default: [0, 0, 0]
+ *  @property {import("@utils/MathGraphs/types.js").Point3D} end default: [1, 1, 1]
+ *  @property {Number} lineWidth default: 0.02
+ *  @property {Number} segments default: 8
+ *  @property {String} name
+ *  @property {Line3DStyle} style
+ */
+
 export class Line3D {
 
     static defaultStyle = {
         color: '#ffffff'
     }
 
+    /**
+     * @constructor
+     * @param {Line3DParams} params 
+     */
     constructor(params = {}){
 
         const {
@@ -14,9 +31,11 @@ export class Line3D {
             end = [1, 1, 1],
             lineWidth = 0.02,
             segments = 8,
+            name,
             style = {}
         } = params;
 
+        this.name = name;
         this.start = {
             x: start.x ?? start[0],
             y: start.y ?? start[1],

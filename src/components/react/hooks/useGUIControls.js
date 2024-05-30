@@ -1,6 +1,7 @@
 import { GUI } from "dat.gui";
 import { useEffect, useRef } from "react";
 
+
 export function useGUIControls({folders = {}, containerRef, onChange, name = 'GUI'}){
 
     const dataRef = useRef({});

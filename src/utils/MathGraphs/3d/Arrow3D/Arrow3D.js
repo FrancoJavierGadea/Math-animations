@@ -1,6 +1,24 @@
 import { DEGREES } from "@utils/MathGraphs/utils";
 import * as THREE from "three";
 
+/**
+ * @typedef Arrow3DStyle
+ *  @property {String} color
+ *  @property {Boolean} transparent default: true
+ *  @property {Number} opacity default: 1
+ * 
+ * @typedef Arrow3DParams
+ *  @property {import("@utils/MathGraphs/types.js").Point3D} start default: [0, 0, 0]
+ *  @property {import("@utils/MathGraphs/types.js").Point3D} end default: [1, 1, 1]
+ *  @property {Number} lineWidth default: 0.02
+ *  @property {Number} segments default: 8
+ *  @property {Number} delta default: 0.05
+ *  @property {Boolean} startArrow default: false
+ *  @property {Boolean} endArrow default: true
+ *  @property {String} name
+ *  @property {Line3DStyle} style
+ */
+
 export class Arrow3D {
 
     static defaultStyle = {
@@ -9,6 +27,10 @@ export class Arrow3D {
         opacity: 1
     }
 
+    /**
+     * @constructor
+     * @param {Arrow3DParams} params 
+     */
     constructor(params = {}){
 
         const {
@@ -20,9 +42,11 @@ export class Arrow3D {
             delta = 0.05,
             startArrow = false,
             endArrow = true,
+            name,
             style = {}
         } = params;
 
+        this.name = name;
         this.start = {
             x: start.x ?? start[0],
             y: start.y ?? start[1],

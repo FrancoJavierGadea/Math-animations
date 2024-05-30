@@ -11,6 +11,9 @@ import Layout from "@layouts/Layout.astro";
             <canvas class="front" width="960" height="540"></canvas>
         </div>
     
+        <img class="image" />
+
+        
     </main>
 
 </Layout>
@@ -36,5 +39,11 @@ import Layout from "@layouts/Layout.astro";
             grid-row-start: 1;
             grid-column-start: 1;
         }
+    }
+
+    .image {
+        display: block;
+        margin: 20px auto;
+        border: 1px solid gray;
     }
 </style>

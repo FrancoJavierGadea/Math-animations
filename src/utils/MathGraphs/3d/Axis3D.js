@@ -1,11 +1,22 @@
 
 import * as THREE from 'three';
 import { Point3D } from './Point3D/Point3D';
-import { color } from 'd3';
-import Arrow from '@/pages/test/2d/arrow.astro';
 import { Arrow3D } from './Arrow3D/Arrow3D';
 import { DEGREES } from '../utils';
 
+
+/**
+ * @typedef Axis3DStyle
+ *  @property {String | {x:String, y:String, z:String}} color
+ *  
+ * @typedef Axis3DParams 
+ *  @property {Number} size default: 10
+ *  @property {Boolean} hideGrid default: false
+ *  @property {Boolean} hideOrigin default: false
+ *  @property {{x:Boolean, y:Boolean, z:Boolean}} hideAxis default: null
+ *  @property {String} name
+ *  @property {Axis3DStyle} style 
+ */
 
 export class Axis3D {
 
@@ -18,6 +29,10 @@ export class Axis3D {
     };
 
 
+    /**
+     * @constructor
+     * @param {Axis3DParams} params 
+     */
     constructor(params = {}){
 
         const {
@@ -25,9 +40,11 @@ export class Axis3D {
             hideGrid = false,
             hideAxis = null,
             hideOrigin = false,
+            name,
             style = {}
         } = params;
 
+        this.name = name;
         this.size = size;
         this.hideGrid = hideGrid;
         this.hideAxis = hideAxis;

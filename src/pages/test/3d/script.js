@@ -4,10 +4,13 @@ import { Plot2D } from "@utils/MathGraphs/3d/Plot/Plot2D";
 import { Plot3D } from "@utils/MathGraphs/3d/Plot/Plot3D";
 import { Point3D } from "@utils/MathGraphs/3d/Point3D/Point3D";
 import { Scene3D } from "@utils/MathGraphs/3d/Scene3D";
+import { BACK, DOWN, FRONT, LEFT, RIGHT, UP } from "@utils/MathGraphs/3d/directions";
+import { ControlsDatGUI } from "@utils/MathGraphs/ControlsDatGUI";
 import { style } from "d3";
 
 
 const CANVAS = document.querySelector('canvas');
+window.canvas = CANVAS;
 
 const scene = new Scene3D({
     canvas: CANVAS
@@ -88,12 +91,32 @@ const scene = new Scene3D({
     }
     
     const plot1 = new Plot3D({
-        func
+        func,
     });
-    
-    scene.scene.add(plot1.shape);
 
-});
+    const plot2 = new Plot3D({
+        func: (x, y) => Math.pow(x, 2) + Math.pow(y, 2),
+        range: [-2, 2]
+    });
+
+    plot2.shape.position.set(-3, -3, 0);
+
+    const plot3 = new Plot3D({
+        func: (x, y) => Math.pow(x, 2) - Math.pow(y, 2),
+        range: [-2, 2],
+        style: {
+            color: 'rgb(6, 64, 122)'
+        },
+        wireframeStyle: {
+            color: '#0819a0'
+        }
+    });
+
+    plot3.shape.position.set(3, -3, 0);
+    
+    scene.scene.add(plot1.shape, plot2.shape, plot3.shape);
+
+})();
 
 
 //Try Plot2D
@@ -132,3 +155,37 @@ function animate(){
 }
 
 animate();
+
+
+
+
+const controls = new ControlsDatGUI({
+    name: "Controls",
+    container: document.querySelector('.container')
+});
+
+
+Object.entries({
+    'view up': () => scene.changeView(UP, 7),
+    'view down': () => scene.changeView(DOWN, 7),
+    'view left': () => scene.changeView(LEFT, 7),
+    'view right': () => scene.changeView(RIGHT, 7),
+    'view front': () => scene.changeView(FRONT, 7),
+    'view back': () => scene.changeView(BACK, 7),
+    'change perspective': () => scene.changePerspective(),
+    'get image': () => {
+
+        scene.getImage().then(src => document.querySelector('.image').src = src);
+    }
+})
+.forEach(([name, onClick]) => {
+
+    controls.addButton(name, onClick, {folder: 'world'});
+});
+
+
+
+
+
+
+controls.append();
